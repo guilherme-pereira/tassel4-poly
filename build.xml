@@ -1,0 +1,142 @@
+<project name="TASSEL" default="dist" basedir=".">
+    
+    <description>
+        TASSEL: Trait Analysis by a SSociation, Evolution and Linkage
+        The TASSEL project (http://www.maizegenetics.net) may be distributed
+        under the terms of the GNU Lesser General Public License
+    </description>
+    
+    <!-- set global properties for this build -->
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="dist" location="dist"/>
+    <property name="lib" location="lib"/>
+    <property name="lib_deploy" location="..\lib_deploy"/>
+    <property name="images_plugins" value="net\maizegenetics\baseplugins\images"/>
+    <property name="images" value="net\maizegenetics\tassel\images"/>
+    
+    <property name="tassel" location="${dist}\sTASSEL.jar"/>
+    <property name="tasselGBS" location="${dist}\sTASSELGBS.jar"/>
+    <property name="test" location="test"/>
+    <property name="pal_src" value="${basedir}/src/net/maizegenetics/pal"/>
+    <property name="keystore_dir" value="${basedir}/common"/>
+    <property name="javadoc" value="${basedir}/javadoc"/>
+    
+    
+    <path id="build.class.path">
+        <fileset dir="${lib}">
+            <include name="*.jar"/>
+            <include name="*.zip"/>
+        </fileset>
+    </path>
+
+    <pathconvert property="manifest.classpath" pathsep=" ">
+        <path refid="build.class.path"/>
+        <mapper>
+            <chainedmapper>
+                <flattenmapper/>
+                <globmapper from="*.jar" to="lib/*.jar"/>
+            </chainedmapper>
+        </mapper>
+    </pathconvert>
+    
+    
+    <target name="init">
+        
+        <!-- Create the time stamp -->
+        <tstamp>
+            <format property="" pattern=""/>
+        </tstamp>
+        
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build}"/>
+        <mkdir dir="${dist}"/>
+        
+    </target>
+    
+    <target name="compile" depends="init" description="compile the source">
+        <!-- Compile the java code from ${src} into ${build} -->
+        <javac includeantruntime="false" srcdir="${src}" destdir="${build}" debug="true">
+            <exclude name="**/Test*"/>
+            <classpath>
+                <pathelement path="${lib}"/>
+                <fileset dir="${lib}">
+                    <include name="**/*.jar"/>
+                    <include name="**/*.zip"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+    
+    <target name="dist" depends="clean, compile" description="distribution">
+        
+        <!-- Create the distribution directory -->
+        <mkdir dir="${dist}"/>
+        
+        <copy todir="${build}" description="copy images">
+            <fileset dir="${src}">
+                <include name="**/*.gif"/>
+                <include name="**/*.GIF"/>
+                <include name="**/*.html"/>
+            </fileset>
+        </copy>
+        
+        <jar jarfile="${tassel}" basedir="${build}">
+            <manifest>
+                <attribute name="Built-By" value="${user.name}"/>
+                <attribute name="Main-Class" value="net.maizegenetics.tassel.TASSELMainApp"/>
+                <attribute name="Class-Path" value="${manifest.classpath}"/>
+            </manifest>
+        </jar>
+        
+        <signjar jar="${tassel}" alias="http://www.maizegenetics.net/tassel" storepass="EdBuckler" keystore="${keystore_dir}/keystore"/>
+        
+    </target>
+    
+    
+    
+    <target name="javadoc">
+        
+        <delete dir="${javadoc}"/>
+        <mkdir dir="${javadoc}"/>
+        
+        <javadoc packagenames="net.*"
+                 source="1.7"
+                 destdir="${javadoc}"
+                 author="true"
+                 use="true"
+                 windowtitle="net.maizegenetics API"
+                 doctitle="TASSEL: Trait Analysis by aSSociation, Evolution and Linkage">
+            <classpath refid="build.class.path"/>
+            
+            <sourcepath>
+                <pathelement path="${basedir}/src"/>
+            </sourcepath>
+        </javadoc>
+        
+    </target>
+    
+    
+    <target name="run" description="Run the program">
+        <copy file="${tassel}" todir="${test}"/>
+        <copy file="${lib}\gdpc.jar" todir="${test}" />
+        <copy file="${lib_deploy}\tasselLib.zip" todir="${test}" />
+        <!-- run the class -->
+        <java classname="net.maizegenetics.tassel.TASSELMainApp" fork="true" spawn="true">
+            <arg value="-h"/>
+            <jvmarg value="-Xms128m"/>
+            <jvmarg value="-Xmx256m"/>
+            <classpath>
+                <!-- include all jar files  -->
+                <pathelement location="${test}/tasselLib.zip"/>
+                <pathelement location="${test}/sTASSEL.jar"/>
+                <pathelement location="${test}/browser.jar"/>
+            </classpath>
+        </java>
+    </target>
+    
+    <target name="clean" description="clean up">
+        <delete dir="${build}"/>
+    </target>
+    
+</project>
