@@ -20,7 +20,7 @@ In the same way as Tassel3, Tassel4 is run from the terminal with command lines 
 ./tassel4-poly/run_pipeline.pl -fork1 -DiscoverySNPCallerPlugin -i mergedTBT/myStudy.tbt.shrt -sh -m topm/myMasterTags.topm -mUpd topm/myMasterTagsWithVariants.topm -vcf -o vcf/raw/myGBSGenos_chr+ -mnF 0.8 -p myPedigreeFile.ped -mnMAF 0.02 -mnMAC 100000 -ref MyReferenceGenome.fa -sC 1 -eC 10 -endPlugin -runfork1
 ```
 
-Remember to change the file extension `*.byte` to `*.shrt` where needed in subsequent plugins. Also, notice that VCF files returned by Tassel4-Poly contains genotype calls as in a diploid species. In order to get quantitative (dosage) genotype calls for polyploid species as provided by [SuperMASSA](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0030906) software, you may want to use the VCF files as input data in the [VCF2SM](https://github.com/guilherme-pereira/vcf2sm) pipeline.
+Remember to change the file extension `*.byte` to `*.shrt` where needed in subsequent plugins. Also, notice that VCF files returned by Tassel4-Poly still contains genotype calls as in a diploid species. In order to get quantitative (dosage) genotype calls for polyploid species as provided by [SuperMASSA](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0030906) software, you may want to use the VCF files as input data in the [VCF2SM](https://github.com/guilherme-pereira/vcf2sm) pipeline.
 
 ## Cite
 
