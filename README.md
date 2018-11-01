@@ -28,4 +28,4 @@ If you end up using Tassel4-Poly in your study, please make sure to cite the pub
 
 - Glaubitz JC, Casstevens TM, Lu F, Harriman J, Elshire RJ, Sun Q, Buckler ES. (2014) TASSEL-GBS: A High Capacity Genotyping by Sequencing Analysis Pipeline. *PLoS ONE* 9(2): e90346. https://doi.org/10.1371/journal.pone.0090346
 
-- Pereira GS, Garcia AAF, Margarido GRA. (2017) A fully automated pipeline for quantitative genotype calling from next generation sequencing data in polyploids. *BMC Bioinformatics* (submitted).
+- Pereira GS, Garcia AAF, Margarido GRA. (2018) A fully automated pipeline for quantitative genotype calling from next generation sequencing data in autopolyploids. *BMC Bioinformatics* 19:398. https://doi.org/10.1186/s12859-018-2433-6.
